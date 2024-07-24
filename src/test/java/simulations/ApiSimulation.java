@@ -1,15 +1,19 @@
 package simulations;
 
-import io.gatling.javaapi.core.Simulation;
-import io.gatling.javaapi.core.CoreDsl.*;
-import io.gatling.javaapi.http.HttpDsl.*;
-import io.gatling.javaapi.http.HttpProtocolBuilder;
-import io.gatling.javaapi.core.ScenarioBuilder;
+import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
+import static io.gatling.javaapi.core.CoreDsl.jsonPath;
+import static io.gatling.javaapi.core.CoreDsl.scenario;
+import static io.gatling.javaapi.http.HttpDsl.http;
+import static io.gatling.javaapi.http.HttpDsl.status;
+
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
-import static io.gatling.javaapi.core.CoreDsl.*;
-import static io.gatling.javaapi.http.HttpDsl.*;
+import io.gatling.javaapi.core.ScenarioBuilder;
+import io.gatling.javaapi.core.Simulation;
+// import io.gatling.javaapi.core.CoreDsl.*;
+// import io.gatling.javaapi.http.HttpDsl.*;
+import io.gatling.javaapi.http.HttpProtocolBuilder;
 
 public class ApiSimulation extends Simulation {
 

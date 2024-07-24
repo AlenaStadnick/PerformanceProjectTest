@@ -1,12 +1,10 @@
 package simulations;
 
-import io.gatling.javaapi.core.Simulation;
-import io.gatling.javaapi.core.CoreDsl.*;
-import io.gatling.javaapi.http.HttpDsl.*;
-import io.gatling.javaapi.http.HttpProtocolBuilder;
-import io.gatling.javaapi.core.ScenarioBuilder;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import io.gatling.javaapi.core.ScenarioBuilder;
+import io.gatling.javaapi.core.Simulation;
+import io.gatling.javaapi.http.HttpProtocolBuilder;
 
 import static io.gatling.javaapi.core.CoreDsl.*;
 import static io.gatling.javaapi.http.HttpDsl.*;
@@ -14,7 +12,7 @@ import static io.gatling.javaapi.http.HttpDsl.*;
 public class LoadSimulation extends Simulation {
 
     // Load configuration
-    private static final Config config = ConfigFactory.load();
+    private static final Config config = ConfigFactory.load("application.conf");
 
     // Use configuration values
     private static final String baseUrl = config.getString("gatling.http.baseUrl");
@@ -55,14 +53,16 @@ public class LoadSimulation extends Simulation {
     {
         setUp(
                 loadScenario1.injectOpen(
-                        constantUsersPerSec(10).during(20),
-                        constantUsersPerSec(100).during(5),
-                        constantUsersPerSec(10).during(20)
+                        nothingFor(5), // wait 5 seconds before starting scenario 1
+                        constantUsersPerSec(10).during(20), // 10 users/sec for 20 sec
+                        rampUsers(100).during(5), // ramp up to 100 users in 5 sec
+                        constantUsersPerSec(10).during(20) // 10 users/sec for another 20 sec
                 ).protocols(httpProtocol),
 
                 loadScenario2.injectOpen(
-                        constantUsersPerSec(20).during(20),
-                        rampUsersPerSec(20).to(100).during(30)
+                        nothingFor(5), // wait 5 seconds before starting scenario 2
+                        constantUsersPerSec(20).during(20), // 20 users/sec for 20 sec
+                        rampUsers(100).during(30) // ramp up to 100 users in 30 sec
                 ).protocols(httpProtocol)
         ).assertions(
                 global().successfulRequests().percent().is(100.0)
