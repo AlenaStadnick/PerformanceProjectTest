@@ -28,7 +28,6 @@ public class LoadSimulation extends Simulation {
             .exec(
                     http("Get Authorized User")
                             .get("/user")
-                            .header("Authorization", "Bearer " + authToken)
                             .check(status().is(200))
                             .check(jsonPath("$.user.id").exists())
                             .check(jsonPath("$.user.username").exists())
@@ -43,7 +42,6 @@ public class LoadSimulation extends Simulation {
             .exec(
                     http("Get Authorized User")
                             .get("/user")
-                            .header("Authorization", "Bearer " + authToken)
                             .check(status().is(200))
                             .check(jsonPath("$.user.id").exists())
                             .check(jsonPath("$.user.username").exists())
